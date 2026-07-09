@@ -3,18 +3,19 @@ import matplotlib.pyplot as plt
 import subprocess
 import os
 
+print("Running ocean simulation to generate CSV data...")
 env = os.environ.copy()
-env["VIN1"] = "0.5"
+env["VIN1"] = "0"
 env["VIN2"] = "0.5"
 env["VIN3"] = "0"
-env["VIN4"] = "0"
+env["VIN4"] = "0.5"
 
 subprocess.run(
     ["./scripts/run_ocean.sh"],
     env=env,
     check=True
 )
-
+print("Simulation completed. Reading CSV data...")
 def parse_eng(val):
  
     if isinstance(val, (int, float)):
@@ -51,7 +52,7 @@ rows = []
         rows.append([parse_eng(p) for p in parts])"""
 
 
-with open("test6_vouts.csv") as f:
+with open("test7_vouts.csv") as f:
     for i, line in enumerate(f):
         if i < 3:        # skip first 3 rows → data starts at row 4
             continue
@@ -76,17 +77,6 @@ elif data.shape[1] == 4:
 else:
     raise ValueError("Unexpected CSV format")
 
-# Plot
-plt.figure()
-for i in range(vouts.shape[1]):
-    plt.plot(time, vouts[:, i], label=f"Vout{i+1}")
-
-plt.xlabel("Time (s)" if data.shape[1] == 5 else "Sample index")
-plt.ylabel("Voltage (V)")
-plt.legend()
-plt.grid(True)
-plt.tight_layout()
-plt.show()
 
 N_CHECK = 10
 LOW_TH  = 0.01
@@ -117,3 +107,17 @@ elif decisions == [0, 1, 0, 0]:
     print("Predicted class: Bottom Row")
 elif decisions == [1, 0, 0, 0]:
     print("Predicted class: Top Row")
+
+# Plot
+plt.figure()
+for i in range(vouts.shape[1]):
+    plt.plot(time, vouts[:, i], label=f"Vout{i+1}")
+
+
+
+plt.xlabel("Time (s)" if data.shape[1] == 5 else "Sample index")
+plt.ylabel("Voltage (V)")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()

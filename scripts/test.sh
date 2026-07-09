@@ -10,14 +10,6 @@ PARENT_DIR="$(cd "$REPO_DIR/.." && pwd)"
 
 cd "$PARENT_DIR"
 
+echo "test" > test.txt
 
-
-cd "$REPO_DIR"
-
-
-which ocean || { echo "ocean not found in PATH"; exit 1; }
-
-ocean -nograph -restore cadence/ocean/transfer.ocn
-
-
-
+source cadence_intel16.sh
