@@ -66,10 +66,6 @@ print("Predicted class:")
 print(np.argmax(y_pred_split[0]))
 
 
-
-
-
-
 #quantization for analog mapping
 scale=100
 
